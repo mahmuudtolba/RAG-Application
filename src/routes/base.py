@@ -1,5 +1,5 @@
-from fastapi import FastAPI , APIRouter
-import os
+from fastapi import FastAPI , APIRouter , Depends
+from helper.config import get_settings , Settings
 
 
 
@@ -11,10 +11,10 @@ base_router = APIRouter(
 )
 
 @base_router.get("/")
-async def home():
+async def home(app_settings:Settings = Depends(get_settings)):
     # Access the environment variables
-    APP_NAME = os.getenv("APP_NAME")
-    APP_VERSION = os.getenv("APP_VERSION") 
+    APP_NAME = app_settings.APP_NAME
+    APP_VERSION = app_settings.APP_VERSION
 
     return {"APP_NAME" : APP_NAME ,
             "APP_VERSION" : APP_VERSION}
